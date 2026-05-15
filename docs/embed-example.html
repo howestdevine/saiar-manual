@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SAIAR Manual embed example</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: Georgia, "Times New Roman", serif;
+      background: #1a1f2a;
+      color: #e8e4dc;
+    }
+    .site-header, .site-footer {
+      padding: 0.85rem 1.25rem;
+      background: #11151c;
+      border-color: #2a3140;
+      border-style: solid;
+    }
+    .site-header {
+      border-width: 0 0 1px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .site-footer {
+      border-width: 1px 0 0;
+      font-size: 0.9rem;
+      color: #b8b3a8;
+    }
+    .site-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      gap: 1rem;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .site-main > p {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      font-size: 0.95rem;
+      color: #c9c4bb;
+    }
+    /*
+      Theme hooks consumed by <saiar-manual> (names mirror README).
+      This fake site wraps the widget so paths stay relative to docs/.
+    */
+    saiar-manual {
+      display: block;
+      flex: 1;
+      min-height: 420px;
+      --saiar-bg: #141824;
+      --saiar-panel: #1c2433;
+      --saiar-panel-2: #263044;
+      --saiar-text: #f2efe7;
+      --saiar-muted: #a8adb8;
+      --saiar-line: #2f3a4d;
+      --saiar-accent: #6ec1ff;
+      --saiar-accent-text: #06111d;
+      --saiar-radius: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">Example partner site header</header>
+  <main class="site-main">
+    <p>
+      The manual below loads from the parent folder using relative paths suitable
+      for static hosting next to the main bundle.
+    </p>
+    <script src="../src/steps.js"></script>
+    <script src="../src/image-meta.js"></script>
+    <script src="../src/saiar-manual.js"></script>
+    <saiar-manual
+      data-image-base="../images/"
+      data-cover-logo="../assets/logo.png"
+      data-cover-title="SAIAR Lab Manual"
+      data-show-toc="true"
+      data-persist="both"
+      data-theme="dark"
+      data-lang="nl"></saiar-manual>
+  </main>
+  <footer class="site-footer">Example partner site footer</footer>
+</body>
+</html>
