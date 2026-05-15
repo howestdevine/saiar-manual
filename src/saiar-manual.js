@@ -239,14 +239,17 @@ class SaiarManual extends HTMLElement {
     }
   }
 
-  _persist() {
+  _persist(push = false) {
     if (this._persistMode() === 'none') return;
+    if (push) this._pendingPushHistory = true;
     if (this._persistWriteScheduled) return;
     this._persistWriteScheduled = true;
     requestAnimationFrame(() => {
       this._persistWriteScheduled = false;
+      const shouldPush = !!this._pendingPushHistory;
+      this._pendingPushHistory = false;
       if (this._persistMode() === 'hash' || this._persistMode() === 'both') {
-        this._syncHash();
+        this._syncHash(shouldPush);
       }
       if (this._persistMode() === 'localstorage' || this._persistMode() === 'both') {
         try {
@@ -270,7 +273,7 @@ class SaiarManual extends HTMLElement {
     return Math.max(1, parseInt(m[1], 10));
   }
 
-  _syncHash() {
+  _syncHash(push = false) {
     if (this._suppressHash) return;
     if (this._persistMode() === 'localstorage' || this._persistMode() === 'none') return;
     if (!this._steps?.length || this._splash === 'pending' || this._completeView) return;
@@ -278,7 +281,9 @@ class SaiarManual extends HTMLElement {
     if (window.location.hash !== want) {
       this._suppressHash = true;
       try {
-        history.replaceState(null, '', `${window.location.pathname}${window.location.search}${want}`);
+        const url = `${window.location.pathname}${window.location.search}${want}`;
+        if (push) history.pushState(null, '', url);
+        else history.replaceState(null, '', url);
       } finally {
         queueMicrotask(() => {
           this._suppressHash = false;
@@ -609,7 +614,7 @@ class SaiarManual extends HTMLElement {
       );
     }
     this.scheduleRender();
-    this._persist();
+    this._persist(prev !== next);
     this._updateNeighborPreloads();
   }
 
